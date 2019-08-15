@@ -92,7 +92,7 @@ public class KeycloakSmsAuthenticator implements Authenticator {
 
             storeSMSCode(context, code, new Date().getTime() + (ttl * 1000)); // s --> ms
 //            if (sendSmsCode(mobileNumber, code, context.getAuthenticatorConfig())) {
-            if (sendSMS(mobileNumber, code)) {
+            if (sendSMS(mobileNumber, code, context.getAuthenticatorConfig())) {
                 Response challenge = context.form().createForm("sms-validation.ftl");
                 context.challenge(challenge);
             } else {
@@ -272,24 +272,24 @@ public class KeycloakSmsAuthenticator implements Authenticator {
         return true;
     }
 
-    public boolean sendSMS(String mobileNo, String message) {
+    public boolean sendSMS(String mobileNo, String message, AuthenticatorConfigModel config) {
 
         int parameterCount = 1;   //specifies how many requests are to be made
 
-        final String END_POINT_URL = "http://sms.magfa.com/services/urn:SOAPSmsQueue";
+//        final String END_POINT_URL = "http://sms.magfa.com/services/urn:SOAPSmsQueue";
         final String URN = "urn:SOAPSmsQueue";
         final String ENQUEUE_METHOD_CALL = "enqueue";
 
-        String USER_NAME;
-        String PASSWORD;
         String SENDER_NUMBER;
         String RECIPIENT_NUMBER;
         String DOMAIN;
 
+        String END_POINT_URL = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_URL);
+        String USER_NAME = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_USERNAME);
+        String PASSWORD = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_PASSWORD);
+
 
         DOMAIN = "sinet";
-        USER_NAME = "majazi";     //fill this with your username
-        PASSWORD = "ucJiFNlokfySUsNq";      //fill this with your password
         SENDER_NUMBER = "30007620"; //fill this with a number from your accounts's number range
         RECIPIENT_NUMBER = mobileNo;   //fill this with the destination number
 
