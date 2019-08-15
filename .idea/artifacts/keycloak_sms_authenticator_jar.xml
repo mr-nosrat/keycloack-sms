@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="keycloak-sms-authenticator:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/keycloak_sms_authenticator_jar</output-path>
+    <root id="archive" name="keycloak-sms-authenticator.jar">
+      <element id="module-output" name="keycloak-sms-authenticator" />
+      <element id="library" level="project" name="Maven: org.apache.axis:axis:1.4" />
+      <element id="library" level="project" name="Maven: org.apache.james:apache-mime4j:0.6" />
+    </root>
+  </artifact>
+</component>
