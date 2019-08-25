@@ -1,4 +1,4 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 import java.net.HttpURLConnection;
 import java.net.URL;

@@ -1,8 +1,7 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 import org.jboss.logging.Logger;
 import org.keycloak.models.AuthenticatorConfigModel;
-import org.keycloak.models.UserCredentialValueModel;
 import org.keycloak.models.UserModel;
 
 import java.util.List;

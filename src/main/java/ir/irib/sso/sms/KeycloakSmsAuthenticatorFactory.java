@@ -1,4 +1,4 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 import org.jboss.logging.Logger;
 import org.keycloak.Config;
@@ -13,9 +13,6 @@ import org.keycloak.provider.ProviderConfigProperty;
 import javax.ws.rs.HttpMethod;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.alliander.keycloak.authenticator.SMSAuthenticatorContstants.AUTH_METHOD_BASIC;
-import static com.alliander.keycloak.authenticator.SMSAuthenticatorContstants.AUTH_METHOD_INMESSAGE;
 
 
 /**
@@ -70,6 +67,15 @@ public class KeycloakSmsAuthenticatorFactory implements AuthenticatorFactory, Co
         property.setHelpText("Use %sms-code% as placeholder for the generated SMS code. Use %user% and %password% as placeholder when 'In message' authentication is used.");
         configProperties.add(property);
 
+
+        // SMS Text
+        property = new ProviderConfigProperty();
+        property.setName(SMSAuthenticatorContstants.CONF_PRP_SMS_SENDER);
+        property.setLabel("SMS Sender");
+        property.setType(ProviderConfigProperty.STRING_TYPE);
+        property.setHelpText("Insert SMS Sender.");
+        configProperties.add(property);
+
         // SMS Gateway
         property = new ProviderConfigProperty();
         property.setName(SMSAuthenticatorContstants.CONF_PRP_SMS_METHOD);
@@ -106,8 +112,8 @@ public class KeycloakSmsAuthenticatorFactory implements AuthenticatorFactory, Co
         property.setLabel("Authentication method");
         property.setHelpText("");
         types = new ArrayList(2);
-        types.add(AUTH_METHOD_BASIC);
-        types.add(AUTH_METHOD_INMESSAGE);
+        types.add(SMSAuthenticatorContstants.AUTH_METHOD_BASIC);
+        types.add(SMSAuthenticatorContstants.AUTH_METHOD_INMESSAGE);
         property.setType(ProviderConfigProperty.LIST_TYPE);
         property.setDefaultValue(types);
         configProperties.add(property);

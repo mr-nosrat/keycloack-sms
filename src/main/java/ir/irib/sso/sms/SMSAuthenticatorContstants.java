@@ -1,4 +1,4 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 /**
  * Created by joris on 18/11/2016.
@@ -9,6 +9,7 @@ public class SMSAuthenticatorContstants {
 
     // Configurable fields
     public static final String CONF_PRP_USR_ATTR_MOBILE = "sms-auth.attr.mobile";
+    public static final String CONF_PRP_SMS_SENDER = "sms-auth.sms.sender";
     public static final String CONF_PRP_SMS_CODE_TTL = "sms-auth.code.ttl";
     public static final String CONF_PRP_SMS_CODE_LENGTH = "sms-auth.code.length";
     public static final String CONF_PRP_SMS_TEXT = "sms-auth.msg.text";

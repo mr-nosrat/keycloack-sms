@@ -1,4 +1,4 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 public class SmsCodeModel {
 

@@ -1,4 +1,4 @@
-package com.alliander.keycloak.authenticator;
+package ir.irib.sso.sms;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
@@ -8,7 +8,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -149,6 +148,7 @@ public class KeycloakSmsAuthenticator implements Authenticator {
     }
 
     SmsCodeModel smsCodeModel;
+
     // Store the code + expiration time in a UserCredential. Keycloak will persist these in the DB.
     // When the code is validated on another node (in a clustered environment) the other nodes have access to it's values too.
     private void storeSMSCode(AuthenticationFlowContext context, String code, Long expiringAt) {
@@ -161,7 +161,7 @@ public class KeycloakSmsAuthenticator implements Authenticator {
             credentials.setType(SMSAuthenticatorContstants.USR_CRED_MDL_SMS_EXP_TIME);
             credentials.setValue((expiringAt).toString());
 
-           smsCodeModel= new SmsCodeModel(context.getUser().getId(),code,expiringAt);
+            smsCodeModel = new SmsCodeModel(context.getUser().getId(), code, expiringAt);
 //            context.getSession().users().updateCredential(context.getRealm(), context.getUser(), credentials);
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,7 +177,7 @@ public class KeycloakSmsAuthenticator implements Authenticator {
         MultivaluedMap<String, String> formData = context.getHttpRequest().getDecodedFormParameters();
         String enteredCode = formData.getFirst(SMSAuthenticatorContstants.ANSW_SMS_CODE);
 
-        String expectedCode =  smsCodeModel.getSmsCode();// SMSAuthenticatorUtil.getCredentialValue(context.getUser(), SMSAuthenticatorContstants.USR_CRED_MDL_SMS_CODE);
+        String expectedCode = smsCodeModel.getSmsCode();// SMSAuthenticatorUtil.getCredentialValue(context.getUser(), SMSAuthenticatorContstants.USR_CRED_MDL_SMS_CODE);
         Long expTimeString = smsCodeModel.getExpiredTime();//  SMSAuthenticatorUtil.getCredentialValue(context.getUser(), SMSAuthenticatorContstants.USR_CRED_MDL_SMS_EXP_TIME);
 
         logger.debug("Expected code = " + expectedCode + "    entered code = " + enteredCode);
@@ -280,18 +280,18 @@ public class KeycloakSmsAuthenticator implements Authenticator {
         final String URN = "urn:SOAPSmsQueue";
         final String ENQUEUE_METHOD_CALL = "enqueue";
 
-        String SENDER_NUMBER;
-        String RECIPIENT_NUMBER;
-        String DOMAIN;
+        String RECIPIENT_NUMBER = mobileNo;
+        String DOMAIN = "sinet";
 
         String END_POINT_URL = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_URL);
         String USER_NAME = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_USERNAME);
         String PASSWORD = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_PASSWORD);
+        String SENDER_NUMBER = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_SENDER);
+        String SMS_TEXT = SMSAuthenticatorUtil.getConfigString(config, SMSAuthenticatorContstants.CONF_PRP_SMS_TEXT);
 
+        message = SMS_TEXT.replace("%sms-code%", message);
 
-        DOMAIN = "sinet";
-        SENDER_NUMBER = "30007620"; //fill this with a number from your accounts's number range
-        RECIPIENT_NUMBER = mobileNo;   //fill this with the destination number
+//        SENDER_NUMBER = "30007620"; //fill this with a number from your accounts's number range
 
         try {
             //creating a service object
